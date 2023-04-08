@@ -19,7 +19,7 @@
     color: #121212;
   }
 </style>
-<title>Liquid Simulation</title>
+<title>CS 184 Final Project</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 
@@ -40,11 +40,11 @@
 <body>
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2023</h1>
-<h1 align="middle">Final Project</h1>
+<h1 align="middle">Water Simulation via Smoothed-Particle Hydrodynamics</h1>
 <h2 align="middle"> Nithin Tatikonda, Samantha Huang, Shreyas Patel, Xiaowen Yuan</h2>
 
 <!-- Add Website URL -->
-<h2 align="middle">Website URL: <a href="TODO">TODO</a></h2>
+<h2 align="middle">Website URL: <a href="https://samanthahuang2.github.io/cs184_final_project/">https://samanthahuang2.github.io/cs184_final_project</a></h2>
 
 <br><br>
 
@@ -81,27 +81,36 @@ Do <em>NOT</em> use absolute paths, such as <pre>"/Users/student/Desktop/image.j
 <p>or, alternatively, you can include an SVG image of a LaTex formula.</p>
 
 <div>
-
-<h2 align="middle">Overview</h2>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
 -->
 
-<h2 align="middle">Summary</h2>
-<!-- Walk through the ray generation and primitive intersection parts of the rendering pipeline.
-Explain the triangle intersection algorithm you implemented in your own words.
-Show images with normal shading for a few small .dae files. -->
-<!--
-<h3>
-  Walk through the ray generation and primitive intersection parts of the rendering pipeline.
-</h3> -->
+<h2 align="middle">Title, Summary and Team Members</h2>
+<!-- Provide us a descriptive title, 2-3 sentences that summarize your project, 
+  and list your three team members.
+-->
 <p>
-  Provide us a descriptive title, 2-3 sentences that summarize your project, and list your three team members.
+  The title of our project is Water Simulation via Smoothed-Particle Hydrodynamics. Smoothed-particle 
+  hydrodynamics is a simulation method that can accurately simulate the behavior of continuous mediums. 
+  This method will be implemented to accurately simulate the motion of water, and ideally extend it to 
+  simulate the dynamics of other liquids of varying densities. The team members of this project are Nithin 
+  Tatikonda, Samantha Huang, Shreyas Patel, Xiaowen Yuan.
 </p>
 <br>
+
+<h2 align="middle">Problem Description</h2>
+<!-- Here you should provide the context for your idea. Describe the problem that 
+  you are trying to solve, why it is important, where it is challenging. Give us a
+  general idea on how you are going to solve it.
+-->
+<p>
+  We are trying to realistically simulate liquids in this project using the Langrangian method. 
+  This is important as we want to be able to generate fluids with realistic motion for use in 
+  software such as movies and games. In general,we are going to try to solve this problem by 
+  using Project 4’s renderer to model liquid particle motion by implementing the physics for 
+  collisions similar to how we did for project 4. We will also try to implement smooth particle 
+  hydrodynamics.
+</p>
+<br>
+
 <!--
 <h3>
   Explain the triangle intersection algorithm you implemented in your own words.
@@ -147,16 +156,26 @@ Show images with normal shading for a few small .dae files. -->
 
 
 <h2 align="middle">Goals and Deliverables</h2>
-<!-- Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
-Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
-Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis. -->
+<!-- This is the most important part of your proposal. You should carefully think through what 
+  you are trying to accomplish, what results you are going for, and why you think you can 
+  accomplish those goals.  -->
 
 <h3>
   What we plan to deliver
 </h3>
 <p>
-  describe what you believe you must accomplish to have a successful project and achieve the grade you 
-  expect (i.e. your baseline plan -- planning for some unexpected problems would make sense).
+  The baseline for our deliverables is to create simulations for water with realistic physical 
+  properties, such as gravity, tension, and viscosity. These goals can mostly be accomplished 
+  by using the information and papers presented in class as well as some additional resources, 
+  possibly for speeding up the calculations. We will be simulating liquid using a technique 
+  called smoothed particle hydrodynamics. The goal is to implement density constraints, 
+  surface tension, XSPH viscosity and other components of the technique. We will produce a 
+  clip of some fluid being dropped into or being emitted into an enclosed area or some object 
+  benign dropped into a fluid. We will also present water in different states, such as contaminated 
+  water with different viscosity. We’re not creating an interactive system. We will measure the quality
+  of our system by how realistic the simulation is and how fast it can generate the pictures. We want 
+  to see how changing the different components of the technique will change the quality of the 
+  generated images. And we want to see if it is how to simulate liquids with different viscosity.
 </p>
 
 <!--
@@ -197,23 +216,47 @@ Compare rendering times on a few scenes with moderately complex geometries with 
   What we hope to deliver
 </h3>
 <p>
-  describe what you hope to achieve if things go well and you get
-  ahead of schedule (your aspirational plan)
+  We would want to experiment other types of fluids and more properties of water.
 </p>
 <br>
 
 <h2 align="middle">Schedule</h2>
-<!-- Walk through both implementations of the direct lighting function.
-Show some images rendered with both implementations of the direct lighting function.
-Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.
-Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis. -->
+<!-- In this section you should organize and plan the tasks and subtasks that your team 
+  will execute. Since presentations are ~4 weeks from the due-date of the proposal, 
+  you should include a set of tasks for every week. -->
 
 <h3>
-  Task 1
+  Week 1
 </h3>
 <p>
-    YOUR RESPONSE GOES HERE
+  Designing a plan for how to represent liquid particles. Find a list 
+  of the equations needed to implement the motion and properties of liquid 
+  and figuring out how to translate them to code (ie which method of integration 
+  to use if necessary)
 </p>
+<h3>
+  Week 2
+</h3>
+<p>
+  Implementing the necessary data structures to represent the particles 
+  and implementing the code for the particle physics.
+</p>
+<h3>
+  Week 3
+</h3>
+<p>
+  Creating the shader files for best mimic the appearance of water and implementing 
+  the code for possible 
+  reflection or transparency of the water particles
+
+</p>
+<h3>
+  Week 4
+</h3>
+<p>
+  Debugging minor visual issues and attempting to speed up parts of the simulation code.
+</p>
+
 <!--
 <h3>
   Show some images rendered with both implementations of the direct lighting function.
@@ -298,14 +341,6 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
 <br>
 -->
 
-<h3>
-  Task 2
-</h3>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
-<br>
-
 
 <h2 align="middle">Resources</h2>
 <!-- Walk through your implementation of the indirect lighting function.
@@ -315,12 +350,35 @@ For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, an
 Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 You will probably want to use the instructional machines for the above renders in order to not burn up your own computer for hours. -->
 
-<h3>
-  Resource Title
+<h3 align="middle">
+  CS 184: Project 4 Renderer</a>
 </h3>
-<p>
-    YOUR RESPONSE GOES HERE
-</p>
+
+<h3 align="middle">
+  <a href="https://developer.nvidia.com/gpugems/gpugems/part-vi-beyond-triangles/chapter-38-fast-fluid-dynamics-simulation-gpu">
+    GPU Gems Ch 38: Fast Fluid Dynamics Simulation on the GPU</a>
+</h3>
+
+<h3 align="middle">
+  <a href="http://www.cs.cmu.edu/~scoros/cs15467-s16/assignments/A2.pdf  ">
+    CMU: Position-Based Fluids</a>
+</h3>
+
+<h3 align="middle">
+  <a href="https://www.researchgate.net/publication/2486965_Stable_Fluids">
+    ResearchGate: Stable Fluids</a>
+</h3>
+
+<h3 align="middle">
+  <a href="http://www.ijarse.com/images/fullpdf/1512737340_1042_IJARSE.pdf">
+   International Journal of Advance Research in Science and Engineering: Point Rendering Surface Splatting</a>
+</h3>
+
+<h3 align="middle">
+  <a href="https://mmacklin.com/pbf_sig_preprint.pdf">
+   NVIDIA: Position Based Fluids</a>
+</h3>
+
 <br>
 <!--
 <h3>
