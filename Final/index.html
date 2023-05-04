@@ -46,11 +46,13 @@
 <!-- Add Website URL -->
 <h2 align="middle">Website URL: <a href="https://samanthahuang2.github.io/cs184_final_project/Final/index.html">Final Project Website</a></h2>
 
+<center>
 <video width="600" height="500" autoplay loop>
-  <source src="videos/GoodOneSpeedUp.mp4" type="video/mp4" />
+  <source src="videos/SlidingSpedUp.mp4" type="video/mp4" />
   <source src="movie.ogg" type="video/ogg" />
   Your browser does not support the video element.
 </video>
+</center>
 
 <h2 align="middle">Abstract</h2>
 <!-- A paragraph summary of the entire project.
@@ -74,10 +76,10 @@ A description of lessons learned.
   The term “smoothed” in SPH comes from how all of these properties are calculated. Properties of a particular particle are determined by the properties of other particles nearby, but particles further away contribute less then ones that are close by. To help determine the contribution of each neighboring particle, a smoothing kernel is used. Our method of calculation ends up being defined as such:
 </p>
   <tr align="middle">
-    <td>
+    <center>
       <img src="images/Reference Eqn.png" align="middle" width="400px"/>
       <!--<figcaption></figcaption>-->
-    </td>
+    </center>
   </tr>
 
   <h4 align = "middle">Smoothing Kernels</h4>
@@ -87,9 +89,9 @@ A description of lessons learned.
       The W_poly6 is used for calculating all non-force properties of a particle, such as density.
       </p>
     <tr align="center">
-      <td>
+      <center>
         <img src="images/Poly 6.png" align="middle" width="400px"/>
-      </td>
+      </center>
     </tr>
 
     <h4>W_spiky</h4>
@@ -97,13 +99,13 @@ A description of lessons learned.
       The ∇W_spiky is used for calculating pressure forces exerted on a particle.
       </p>
     <tr align="center">
-      <td>
+      <center>
         <img src="images/Spiky.png" align="middle" width="400px"/>
-      </td>
+      </center>
       <p></p>
-      <td>
+      <center>
         <img src="images/Gradient Spiky.png" align="middle" width="300px"/>
-      </td>
+      </center>
     </tr>
 
     <h4>W_viscosity</h4>
@@ -111,22 +113,22 @@ A description of lessons learned.
       The ∇2 W_viscosity is used for calculating the forces exerted on a particle due to viscosity
     </p>
       <tr align="center">
-      <td>
+      <center>
         <img src="images/Viscosity.png" align="middle" width="500px"/>
-      </td>
+      </center>
       <p></p>
-      <td>
+      <center>
         <img src="images/Laplacian Viscosity.png" align="middle" width="300px"/>
-      </td>
+      </center>
     </tr>
 
     <p>
       Below is a graph of the  W_poly6 ,∇W_spiky ,∇2 W_viscosity smoothing kernels that we used.
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/Smoothing Kernel Graph.png" align="middle" width="400px"/>
-        </td>
+        </center>
       </tr>
 
   <h4 align = "middle">Fluid Properties</h4>
@@ -135,9 +137,9 @@ A description of lessons learned.
       Looking at the generalized equation provided previously, when density is plugged in for attribute A, it cancels the density term in the particle volume, resulting in the following
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/Density Equation.png" align="middle" width="150px"/>
-        </td>
+        </center>
       </tr>
     <p>
       In simulation, we set the mass of the particles to INSERT kg and the smoothing kernel used is poly6.
@@ -152,10 +154,10 @@ A description of lessons learned.
       scaled by the gas constant.
     </p>
       <tr align="center">
-        <td>
-          <img src="images/Pressure Eqn.png" align="middle" width="150px"/>
+        <center>
+          <img src="images/Pressure Eqn.png" align="middle" width="175px"/>
         </td>
-      </tr>
+      </center>
     <p>
       Our rest density was 1000 kg/m^3.
     </p>
@@ -163,9 +165,9 @@ A description of lessons learned.
       The resulting force from this pressure is calculated using this following equation:
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/Pressure Forces.png" align="middle" width="400px"/>
-        </td>
+        </center>
       </tr>
      <p>
       The pressure force exerted on a particle is calculated based averaging the pressure of a particle and its neighboring particles, divided by the density of the neighbor. 
@@ -179,9 +181,9 @@ A description of lessons learned.
       coefficients, and the neighbor particle’s density. 
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/Viscosity Forces.png" align="middle" width="450px"/>
-        </td>
+        </center>
       </tr>
     <p>
       The smoothing kernel used was the Laplacian of viscosity kernel. Our coefficient if internal friction is INSERT.
@@ -193,13 +195,13 @@ A description of lessons learned.
       and the poly6 kernel function. 
     </p>
       <tr align="center">
-        <td>
-          <img src="images/Color Field.png" align="" width="250px"/>
-        </td>
+        <center>
+          <img src="images/Color Field.png" align="" width="100px"/>
+        </center>
         <p></p>
-        <td>
-          <img src="images/Surface Forces.png" align="middle" width="250px"/>
-        </td>
+        <center>
+          <img src="images/Surface Forces.png" align="middle" width="100px"/>
+        </center>
       </tr>
       <p>
      To calculate the force near the surface, we calculate the curvature of the surface multiplied by a constant and the normalized gradient of the color field. This can be
@@ -217,29 +219,29 @@ A description of lessons learned.
       To update the positions of the particles in our system we used Sympelectic Euler integration. For this, the first step is to determine the net acceleration for the particle in the current timestep. All of the forces were calculated in terms of force per unit volume and need to be simply divided by density.
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/F->a.png" align="middle" width="400px"/>
-        </td>
+        </center>
       </tr>
       <p>
       Due to force being linear, all forces can simply be added together to determine the net force:
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/net forces.png" align="middle" width="400px"/>
-        </td>
+        </center>
       </tr>
       <p>
       Once the acceleration has been calculated, we follow the Symplectic Euler integration scheme to compute the new velocity and position of the particle and save them.
     </p>
       <tr align="center">
-        <td>
+        <center>
           <img src="images/velocity.png" align="middle" width="200px"/>
-        </td>
+        </center>
         <p></p>
-        <td>
+        <center>
           <img src="images/position.png" align="middle" width="250px"/>
-        </td>
+        </center>
       </tr>
 
 
@@ -292,22 +294,27 @@ A description of lessons learned.
 <p>
   With our implementation, we were able to render our fluid in Blender via object files and in real time through our Project 4 Renderer.
 </p>
+<center>
 <video width="600" height="500" autoplay loop>
-  <source src="videos/GoodOneSpeedUp.mp4" type="video/mp4" />
-  <source src="movie.ogg" type="video/ogg" />
-  Your browser does not support the video element.
+  <source src="videos/GoodOneSpeedUp.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+  Your browser does not support the video tag.
 </video>
+</center>
+<center>
 <video width="600" height="500" autoplay loop>
-  <source src="videos/SlidingSpedUp.mp4" type="video/mp4" />
-  <source src="movie.ogg" type="video/ogg" />
-  Your browser does not support the video element.
+  <source src="videos/SlidingSpedUp.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+  Your browser does not support the video tag.
 </video>
+</center>
+<center>
 <video width="600" height="500" autoplay loop>
-  <source src="videos/real_timeSpedUp.mp4" type="video/mp4" />
-  <source src="movie.ogg" type="video/ogg" />
-  Your browser does not support the video element.
+  <source src="videos/real_time.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+  Your browser does not support the video tag.
 </video>
-
+</center>
 
 <h2 align="middle">References</h2>
 
