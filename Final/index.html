@@ -146,7 +146,7 @@ A description of lessons learned.
         </center>
       </tr>
     <p>
-      In simulation, we set the mass of the particles to INSERT kg and the smoothing kernel used is poly6.
+      In simulation, we set the mass of the particles to 0.04 kg and the smoothing kernel used is poly6.
     </p>
 
     <h4>Pressure</h4>
@@ -190,7 +190,7 @@ A description of lessons learned.
         </center>
       </tr>
     <p>
-      The smoothing kernel used was the Laplacian of viscosity kernel. Our coefficient if internal friction is INSERT.
+      The smoothing kernel used was the Laplacian of viscosity kernel. Our coefficient of internal friction is 36.
     </p>
 
     <h4>Surface Tension</h4>
@@ -209,7 +209,7 @@ A description of lessons learned.
       </tr>
       <p>
      To calculate the force near the surface, we calculate the curvature of the surface multiplied by a constant and the normalized gradient of the color field. This can be
-      simplified to taking the Laplacian of the color field multiplied by the normalized color gradient vector and scaled by sigma, which was INSERT on out simulation and represents the strength of intermolecular forces in the fluid.
+      simplified to taking the Laplacian of the color field multiplied by the normalized color gradient vector and scaled by sigma, which was 6 on out simulation and represents the strength of intermolecular forces in the fluid.
     </p>
   
     <h3 align = "middle">Neighbor Search</h3>
