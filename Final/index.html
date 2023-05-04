@@ -19,7 +19,7 @@
     color: #121212;
   }
 </style>
-<title>CS 184 Final Project Proposal</title>
+<title>CS 184 Final Project</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
 
@@ -46,11 +46,17 @@
 <!-- Add Website URL -->
 <h2 align="middle">Website URL: <a href="https://samanthahuang2.github.io/cs184_final_project/">Final Project Website</a></h2>
 
+<video width="600" height="500" autoplay loop>
+  <source src="videos/GoodOneSpeedUp.mp4" type="video/mp4" />
+  <source src="movie.ogg" type="video/ogg" />
+  Your browser does not support the video element.
+</video>
+
 <h2 align="middle">Abstract</h2>
 <!-- A paragraph summary of the entire project.
 -->
 <p>
- TODO
+  Our final project was a simulation of liquids done using Smoothed Particle Hydrodynamics. SPH uses particles as discrete representations of regions of a fluid, and uses these to store properties and make it easier to demonstrate the changes and forces that regions experience. For water, the particles tracked the density and pressure of their region. The forces that were exerted on them were pressure forces, viscosity, and surface tension. After tweaking the parameters of the system, the particles were able to accurately replicate the behavior of water.
 </p>
 <br>
 
@@ -59,17 +65,224 @@
 A description of problems encountered and how you tackled them.
 A description of lessons learned.
 -->
+
+<h3 align="middle">Smoothed Particle Hydrodynamics</h3>
 <p>
-  TODO
+  SPH is a computational method that can be used to simulate any continuous media, liquids being one such example. A decomposition of the method’s name gives a great breakdown on how it works. The fluid that is being simulated is represented by a discrete set of particles, where each particle in the fluid represents a specific volume and stores its properties. For liquids in particular, these properties are the density and pressure of the region, as well as the net force that is being applied. These properties have to be recalculated with each time step to reflect any changes that the region experiences. 
 </p>
-<h3>Problems Encountered</h3>
 <p>
-  TODO
+  The term “smoothed” in SPH comes from how all of these properties are calculated. Properties of a particular particle are determined by the properties of other particles nearby, but particles further away contribute less then ones that are close by. To help determine the contribution of each neighboring particle, a smoothing kernel is used. Our method of calculation ends up being defined as such:
+</p>
+  <tr align="middle">
+    <td>
+      <img src="images/Reference Eqn.png" align="middle" width="400px"/>
+      <!--<figcaption></figcaption>-->
+    </td>
+  </tr>
+
+  <h4 align = "middle">Smoothing Kernels</h4>
+
+    <h4>W_poly6</h4>
+    <p>
+      The W_poly6 is used for calculating all non-force properties of a particle, such as density.
+      </p>
+    <tr align="center">
+      <td>
+        <img src="images/Poly 6.png" align="middle" width="400px"/>
+      </td>
+    </tr>
+
+    <h4>W_spiky</h4>
+    <p>
+      The ∇W_spiky is used for calculating pressure forces exerted on a particle.
+      </p>
+    <tr align="center">
+      <td>
+        <img src="images/Spiky.png" align="middle" width="400px"/>
+      </td>
+      <p></p>
+      <td>
+        <img src="images/Gradient Spiky.png" align="middle" width="300px"/>
+      </td>
+    </tr>
+
+    <h4>W_viscosity</h4>
+    <p>
+      The ∇2 W_viscosity is used for calculating the forces exerted on a particle due to viscosity
+    </p>
+      <tr align="center">
+      <td>
+        <img src="images/Viscosity.png" align="middle" width="500px"/>
+      </td>
+      <p></p>
+      <td>
+        <img src="images/Laplacian Viscosity.png" align="middle" width="300px"/>
+      </td>
+    </tr>
+
+    <p>
+      Below is a graph of the  W_poly6 ,∇W_spiky ,∇2 W_viscosity smoothing kernels that we used.
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/Smoothing Kernel Graph.png" align="middle" width="400px"/>
+        </td>
+      </tr>
+
+  <h4 align = "middle">Fluid Properties</h4>
+    <h4>Density</h4>
+    <p>
+      Looking at the generalized equation provided previously, when density is plugged in for attribute A, it cancels the density term in the particle volume, resulting in the following
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/Density Equation.png" align="middle" width="150px"/>
+        </td>
+      </tr>
+    <p>
+      In simulation, we set the mass of the particles to INSERT kg and the smoothing kernel used is poly6.
+    </p>
+
+    <h4>Pressure</h4>
+    <p>
+      Pressure is caused by particles being too close, pushing neighboring particles away, but if particles 
+      are too far spread out then it also creates a negative pressure, or vacuum pressure, pulling particles 
+      back in. This back and forth continues until the fluid reaches its equilibrium rest density. Pressure 
+      is computed from finding the difference between the current density and the rest density of the fluid, 
+      scaled by the gas constant.
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/Pressure Eqn.png" align="middle" width="150px"/>
+        </td>
+      </tr>
+    <p>
+      Our rest density was 1000 kg/m^3.
+    </p>
+    <p>
+      The resulting force from this pressure is calculated using this following equation:
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/Pressure Forces.png" align="middle" width="400px"/>
+        </td>
+      </tr>
+     <p>
+      The pressure force exerted on a particle is calculated based averaging the pressure of a particle and its neighboring particles, divided by the density of the neighbor. 
+      The smoothing kernel used was the gradient of the spiky kernel.
+    </p>
+
+    <h4>Viscosity</h4>
+    <p>
+      Viscosity accounts for the loss of energy due to internal friction. The faster the particles are moving the more energy is lost due to friction, therefore a higher 
+      viscosity. The viscosity forces between two particles are calculated using a smoothing kernel, the differences in two neighboring particles’ velocities, viscosity 
+      coefficients, and the neighbor particle’s density. 
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/Viscosity Forces.png" align="middle" width="450px"/>
+        </td>
+      </tr>
+    <p>
+      The smoothing kernel used was the Laplacian of viscosity kernel. Our coefficient if internal friction is INSERT.
+    </p>
+
+    <h4>Surface Tension</h4>
+    <p>
+      To calculate surface tension, we first define a new field called color for each particle. The color field is updated using the neighbor particle’s mass and density 
+      and the poly6 kernel function. 
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/Color Field.png" align="" width="250px"/>
+        </td>
+        <p></p>
+        <td>
+          <img src="images/Surface Forces.png" align="middle" width="250px"/>
+        </td>
+      </tr>
+      <p>
+     To calculate the force near the surface, we calculate the curvature of the surface multiplied by a constant and the normalized gradient of the color field. This can be
+      simplified to taking the Laplacian of the color field multiplied by the normalized color gradient vector and scaled by sigma, which was INSERT on out simulation and represents the strength of intermolecular forces in the fluid.
+    </p>
+  
+    <h3 align = "middle">Neighbor Search</h3>
+    <p>	
+      A lot of calculation in this simulation relies on searching for nearby particles. To make this portion of the simulation more efficient, the positions of the particles are hashed and mapped. This way, particles can be easily searched for by hashing a position and using the map to store particles that are all in the same 3D region.
+      Our method of hashing was spatial hashing.
+    </p>
+
+    <h3 align = "middle">Updating Positions</h3>
+    <p>	
+      To update the positions of the particles in our system we used Sympelectic Euler integration. For this, the first step is to determine the net acceleration for the particle in the current timestep. All of the forces were calculated in terms of force per unit volume and need to be simply divided by density.
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/F->a.png" align="middle" width="400px"/>
+        </td>
+      </tr>
+      <p>
+      Due to force being linear, all forces can simply be added together to determine the net force:
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/net forces.png" align="middle" width="400px"/>
+        </td>
+      </tr>
+      <p>
+      Once the acceleration has been calculated, we follow the Symplectic Euler integration scheme to compute the new velocity and position of the particle and save them.
+    </p>
+      <tr align="center">
+        <td>
+          <img src="images/velocity.png" align="middle" width="200px"/>
+        </td>
+        <p></p>
+        <td>
+          <img src="images/position.png" align="middle" width="250px"/>
+        </td>
+      </tr>
+
+
+<h3 align = "middle">Problems Encountered</h3>
+<p>
+  Initially our project was written as a python script using the Blender API. The script would run through the simulation and for every frame it would place the position of 
+  a particle into the keyframe of its corresponding Blender object. At the end of the simulation, the script will have provided all the particles with their keyframes, from 
+  which Blender could render an animation. However, this greatly bottlenecked our simulation in two ways.
+</p>
+<p>
+  First was due to how slow python is. The script took over thirty minutes to generate all the frames necessary for a ten second video of 1000 particles. However, our goal 
+  was to simulate fluids with a greater number of particles and a video long enough to show the fluid settling. Trying to produce a better quality video was taking forever. 
+  This led to a second issue regarding Blender itself. When Blender runs a script it technically freezes until the script was completely done. This made it difficult to tell 
+  how far along it was or if it was even running properly. It also left Blender prone to crashing and losing all progress.
+</p>
+<p>
+  To resolve this, we translated the code to C++ and used the renderer from project four. The program was able to run much faster compared to when it was in python, and with 
+  the clothsim renderer it allowed it to simulate the water in real time as well. We were able to run the simulation in real time with no stuttering with up to almost 5000 
+  particles. 
+</p>
+<p>
+  This transfer to a different renderer and language did bring about its own set of issues though. We had to learn how the new renderer worked as well as figure out how to 
+  create the scene. After some troubleshooting, we had the simulation up and running but discovered a new issue. Even though the spheres were really small, the real time 
+  simulation was initially very slow, due to how highly detailed the meshes from project 4 were. After realizing this, we reduced the resolution and the quality of the 
+  spheres to as low as possible. This greatly improved how smoothly the simulation ran.
+</p>
+<p>
+  The largest hurdle was fine tuning the parameters of the fluid to make it as accurate as possible. During the conversion of the code from python to C++, we discovered 
+  that some of our formulas and parameters were wrong, such as viscosity using the incorrect smoothing kernel. However, after all of the mistakes in our math were fixed 
+  it made our simulation much more unstable. It took us a very long time to discover that our code was no longer the issue, and rather the parameters for our liquid were 
+  not accurate for water with the corrected mistakes. None of the papers we looked at gave us parameters that simulated a water-like fluid, leading us to trial and error 
+  numerous different parameters until we finally found a set that was very close.
 </p>
 
-<h3>Lessons Learned</h3>
-<p></p>
-<br>
+<h3 align = "middle">Lessons Learned</h3>
+<p>
+  In this project, we learned a combination of theoretical knowledge and graphics programming skills. After carefully reading and following the paper in the references, 
+  we gained a deeper understanding of fluid simulation with SPH discretization technique and the underlying physics. We learned how to simulate particles with their 
+  pressure, density, and viscosity in consideration. We also learned surface reconstruction techniques such as the marching cubes algorithm even though we didn't have 
+  the capacity to integrate that part into our project. In terms of technical skills, we explored different renders, wrote code in several different languages, and 
+  experimented with several mesh generation techniques. Through that process, we learned the challenges of different rendering techniques and the limitations of 
+  different languages and packages. In the end, we were more familiar with using APIs and tools to help us render desired results. 
+</p>
 
 
 
@@ -77,56 +290,60 @@ A description of lessons learned.
 <!--Your final images, animations, video of your system (whichever is relevant). You can include results that you think show off 
   what you built but that you did not have time to go over on presentation day. -->
 <p>
-  TODO
+  With our implementation, we were able to render our fluid in Blender via object files and in real time through our Project 4 Renderer.
 </p>
+<video width="600" height="500" autoplay loop>
+  <source src="videos/GoodOneSpeedUp.mp4" type="video/mp4" />
+  <source src="movie.ogg" type="video/ogg" />
+  Your browser does not support the video element.
+</video>
+<video width="600" height="500" autoplay loop>
+  <source src="videos/SlidingSpedUp.mp4" type="video/mp4" />
+  <source src="movie.ogg" type="video/ogg" />
+  Your browser does not support the video element.
+</video>
+<video width="600" height="500" autoplay loop>
+  <source src="videos/real_timeSpedUp.mp4" type="video/mp4" />
+  <source src="movie.ogg" type="video/ogg" />
+  Your browser does not support the video element.
+</video>
+
 
 <h2 align="middle">References</h2>
 
-<h3 align="middle">
+<p align = "middle">
   CS 184: Project 4 Renderer</a>
-</h3>
+</p>
 
-<h3 align="middle">
-  <a href="https://developer.nvidia.com/gpugems/gpugems/part-vi-beyond-triangles/chapter-38-fast-fluid-dynamics-simulation-gpu">
-    GPU Gems Ch 38: Fast Fluid Dynamics Simulation on the GPU</a>
-</h3>
+<p align = "middle">
+  <a href="http://image.diku.dk/projects/media/kelager.06.pdf">
+    Lagrangian Fluid Dynamics Using Smoothed Particle Hydrodynamics </a>
+  </p>
 
-<h3 align="middle">
-  <a href="http://www.cs.cmu.edu/~scoros/cs15467-s16/assignments/A2.pdf  ">
-    CMU: Position-Based Fluids</a>
-</h3>
+<p align = "middle">
+  <a href="https://matthias-research.github.io/pages/publications/sca03.pdf">
+    Particle-Based Fluid Simulation for Interactive Applications</a>
+  </p>
 
-<h3 align="middle">
-  <a href="https://www.researchgate.net/publication/2486965_Stable_Fluids">
-    ResearchGate: Stable Fluids</a>
-</h3>
-
-<h3 align="middle">
-  <a href="http://www.ijarse.com/images/fullpdf/1512737340_1042_IJARSE.pdf">
-   International Journal of Advance Research in Science and Engineering: Point Rendering Surface Splatting</a>
-</h3>
-
-<h3 align="middle">
-  <a href="https://mmacklin.com/pbf_sig_preprint.pdf">
-   NVIDIA: Position Based Fluids</a>
-</h3>
-
-<br>
+<p align = "middle">
+  <a href="https://www.diva-portal.org/smash/get/diva2:573583/FULLTEXT01.pdf">
+    Smoothed Particle Hydrodynamics Simulaiton for Continuous Casting</a>
+  </p>
 
 <h2 align="middle">Contributions</h2>
 <h3>Nithin Tatikonda</h3>
 <p>
-  TODO
+  Converted Project 4 Renderer into a usable renderer for our project, experimented with different renderers, researched fine tuning parameters, rendered our result videos.
 </p>
 <h3>Shreyas Patel</h3>
 <p>
-  TODO
+  Wrote adaptive sampling code for original python script, script for saving particle position data points into text file and loading them in from there for Blender rendering. Helped with write-up, final presentation, and put together project video.
 </p>
 <h3>Xiaowen Yuan</h3>
 <p>
-  TODO
+  Did research on surface tension and the marching cube algorithm, helped write surface tension and marching cube algorithm code, and worked on the final write-up.
 </p>
 <h3>Samantha Huang</h3>
 <p>
-  TODO
+  Did research on the SPH and Marching Cube algorithm, debugged code and improving hash function, helped render videos, and made the website.
 </p>
